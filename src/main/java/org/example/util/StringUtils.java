@@ -11,8 +11,8 @@ import static java.lang.String.format;
 public interface StringUtils {
 
     String WORD_REGEXP = "\\W+";
-    String PHRASE_REGEX = "[.!?]";
-    int MAX_SIZE = 100;
+    String PHRASE_REGEX = "[.!?\n]";
+    int MAX_SIZE = 10;
 
     static Stream<String> phraseStream(String text) {
         return Arrays.stream(text.split(PHRASE_REGEX));
@@ -27,10 +27,12 @@ public interface StringUtils {
     }
 
     static String formatResults(Map<Phrase, Double> results) {
-        return results.entrySet().stream()
+        return
+                String.format("%d phrases trouvées.\n", results.size()) +
+                results.entrySet().stream()
                 .filter(e -> e.getValue() != 0d)
-                .limit(MAX_SIZE)
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .limit(MAX_SIZE)
                 .map(e -> format("Score %5.2f - Line %3d - Content : %s", e.getValue(), e.getKey().position(), e.getKey().content().replace("\n", " ")))
                 .reduce((s1, s2) -> String.join("\n", s1, s2))
                 .orElse("no matches found");

@@ -13,17 +13,13 @@ public class Finder {
     }
 
     public Map<Phrase, Double> find(String line) {
-        return find(StringUtils.wordStream(line)
+        return StringUtils.wordStream(line)
                 .map(StringUtils::normalize)
-                .collect(Collectors.toList()));
-    }
-
-    public Map<Phrase, Double> find(Collection<String> words) {
-        Map<Phrase, Double> results = words.stream()
+                .collect(Collectors.toList())
+                .stream()
                 .filter(indexer::contains)
                 .flatMap(word -> indexer.find(word).stream())
                 .collect(Collectors.groupingBy(p -> p, Collectors.collectingAndThen(Collectors.counting(), c -> (double) c)));
-        indexer.indexed().forEach(input -> results.putIfAbsent(input, 0d));
-        return results;
     }
+
 }
