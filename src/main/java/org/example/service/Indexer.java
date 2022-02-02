@@ -54,7 +54,7 @@ public class Indexer {
         return index.containsKey(word);
     }
 
-    public Set<Phrase> indexed() {
+    public Set<Phrase> getIndexed() {
         return indexed;
     }
 }

@@ -7,12 +7,12 @@ import org.example.service.Indexer;
 public class App {
 
     private static Indexer indexer = new Indexer();
-    private static Finder finder = new Finder(indexer);
 
     public static void main(String[] args) {
         if (args.length == 0) {
-            throw new IllegalArgumentException("No directory given to index.");
+            throw new IllegalArgumentException("No file path given to index.");
         }
+        Finder finder = new Finder(indexer);
 
         indexer.index(args[0]);
         new ConsoleReader(finder).start();
