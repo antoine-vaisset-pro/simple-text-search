@@ -5,6 +5,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Finder {
@@ -25,6 +26,7 @@ public class Finder {
         var start = Instant.now();
         Map<Phrase, Double> result = switch (mode) {
             case 0 -> simpleFind(search);
+            case 1 -> regexFind(search);
             default -> indexedFind(search);
         };
         var stop = Instant.now();
@@ -52,6 +54,18 @@ public class Finder {
                     }
                 }
                 i += 1;
+            }
+        });
+
+        return result;
+    }
+
+    public Map<Phrase, Double> regexFind(String search) {
+        Map<Phrase, Double> result = new HashMap<>();
+
+        indexer.getIndexed().forEach(phrase -> {
+            if(Pattern.compile(search).matcher(phrase.content()).matches()){
+                result.put(phrase, 1d);
             }
         });
 

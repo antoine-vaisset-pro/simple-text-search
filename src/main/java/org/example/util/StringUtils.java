@@ -1,16 +1,19 @@
 package org.example.util;
 
 import org.example.service.Phrase;
+import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
 
 public interface StringUtils {
 
-    String WORD_REGEXP = "\\W+";
+    Pattern STRIP_ACCENTS_PATTERN = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+    String WORD_REGEXP = "[.!;:'’\"»«\\s]+";
     String PHRASE_REGEX = "[.!?\n]";
     int MAX_SIZE = 10;
 
@@ -19,11 +22,12 @@ public interface StringUtils {
     }
 
     static Stream<String> wordStream(String line) {
-        return Arrays.stream(line.split(WORD_REGEXP));
+        return Arrays.stream(line.split(WORD_REGEXP)).map(StringUtils::normalize);
     }
 
-    static String normalize(String string) {
-        return string.toLowerCase();
+    static String normalize(String input) {
+        StringBuilder decomposed = new StringBuilder(Normalizer.normalize(input, Normalizer.Form.NFD));
+        return STRIP_ACCENTS_PATTERN.matcher(decomposed).replaceAll("").toLowerCase();
     }
 
     static String formatResults(Map<Phrase, Double> results) {
