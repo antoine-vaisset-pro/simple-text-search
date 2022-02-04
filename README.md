@@ -14,3 +14,4 @@ Simple tool to search words in large text.
 - 0 | text_to_search ==> simple find (match exactly with a simple iterable search)
 - 1 | text_to_search ==> regex find (match exactly with a regex search)
 - 2 | text_to_search ==> use index and normalizer to search accent and case insensitive (compute a score depends of how many words match)
+- 3 | text_to_search ==> use simple implementation of levenshtein algorithm to match near results
