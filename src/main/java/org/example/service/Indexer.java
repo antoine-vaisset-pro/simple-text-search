@@ -57,4 +57,8 @@ public class Indexer {
     public Set<Phrase> getIndexed() {
         return indexed;
     }
+
+    public Map<String, List<Phrase>> getIndex() {
+        return index;
+    }
 }

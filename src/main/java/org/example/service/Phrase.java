@@ -9,11 +9,11 @@ public record Phrase(Integer position, String content) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Phrase phrase = (Phrase) o;
-        return Objects.equals(position, phrase.position) && Objects.equals(content, phrase.content);
+        return Objects.equals(position, phrase.position);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(position, content);
+        return Objects.hash(position);
     }
 }
